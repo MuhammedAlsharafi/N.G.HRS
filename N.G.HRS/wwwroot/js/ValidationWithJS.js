@@ -168,6 +168,15 @@ class ValidationFromMe {
             confirmButtonText: "حسنا",
         });
     }
+    softSuccessMessage(message) {
+        Swal.fire({
+            icon: 'success',
+            title: message,
+            iconColor: "#28a745",
+            confirmButtonColor: "#28a745",
+            confirmButtonText: "حسنا",
+        });
+    }
     //==============
     hide(selector) {
         const element = document.getElementById(selector);
@@ -237,5 +246,31 @@ class ValidationFromMe {
         return totalStartMinutes;
 
     }
+    //getResponse() {
+    //    let timerInterval;
+    //    Swal.fire({
+    //        title: "Auto close alert!",
+    //        html: "I will close in <b></b> milliseconds.",
+    //        //timer: 2000,
+    //        timerProgressBar: true,
+    //        didOpen: () => {
+    //            Swal.showLoading();
+    //            const timer = Swal.getPopup().querySelector("b");
+    //            timerInterval = setInterval(() => {
+    //                timer.textContent = `${Swal.getTimerLeft()}`;
+    //            }, 100);
+    //        },
+    //        willClose: () => {
+    //            clearInterval(timerInterval);
+    //        }
+    //    }).then((result) => {
+    //        /* Read more about handling dismissals below */
+    //        if (result.dismiss === Swal.DismissReason.timer) {
+    //            console.log("I was closed by the timer");
+    //        }
+    //    });
+    //}
+    //=========================
+
 
 }
