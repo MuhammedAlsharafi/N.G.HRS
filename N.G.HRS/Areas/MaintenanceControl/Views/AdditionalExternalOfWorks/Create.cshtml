@@ -7,8 +7,25 @@
     ViewData["Open"] = "Open2";
     ViewData["OpenOperation"] = "OpenOperation2";
 }
-<div class="card">
+<nav class="page-breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="../../../dashboard.html"> الرئيسة</a>
+        </li>
+       
+        <li class="breadcrumb-item active" aria-current="page">
+            مراقبة الدوام
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+           العمليات
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+            <a asp-action="Index"> تكليف عمل إضافي / خارجي  </a>
 
+        </li>
+    </ol>
+</nav>
+<div class="card">
     <div class="card-body">
         <div class="row">
             <div class="col-md-12">
@@ -27,8 +44,8 @@
                                     </select>
                                 </div>
                                 <div class="form-group col-md-2">
-                                    <label asp-for="Assignment" class="form-label"></label><span class="text-danger">*</span>
-                                    <select asp-for="Assignment" id="Assignment" tabindex="2" class="js-example-basic-single  form-select" asp-items="@(ViewData["Assignment"] as SelectList)">
+                                    <label asp-for="AssignmentId" class="form-label"></label><span class="text-danger">*</span>
+                                    <select asp-for="AssignmentId" id="Assignment" tabindex="2" class="js-example-basic-single  form-select" asp-items="@(ViewData["Assignment"] as SelectList)">
                                         <option value="" selected disabled></option>
                                     </select>
                                 </div>
@@ -49,7 +66,7 @@
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <div class="form-group col-md-4 ">
+                                <div class="form-group col-md-6 ">
                                     <label asp-for="FromDate" class="form-label"></label><span class="text-danger">*</span>
                                     <div class="input-group flatpickr flatpickr-date" id="flatpickr-date">
                                         <input asp-for="FromDate" id="FromDate" tabindex="5" class="form-control" placeholder="أدخل التاريخ"
@@ -58,11 +75,9 @@
                                             <i data-feather="calendar"></i>
                                         </span>
                                         <span asp-validation-for="FromDate" class="text-danger"></span>
-
                                     </div>
                                 </div>
-
-                                <div class="form-group col-md-4 ">
+                                <div class="form-group col-md-6">
                                     <div id="ToDateGroup">
                                         <label asp-for="ToDate" class="form-label"></label><span class="text-danger">*</span>
                                         <div class="input-group flatpickr flatpickr-date" id="flatpickr-date">
@@ -72,7 +87,6 @@
                                                 <i data-feather="calendar"></i>
                                             </span>
                                             <span asp-validation-for="ToDate" class="text-danger"></span>
-
                                         </div>
                                     </div>
                                 </div>
@@ -136,15 +150,16 @@
                                     <input asp-for="TaskDestination" tabindex="11" id="TaskDestination" class="form-control" />
                                     <span asp-validation-for="TaskDestination" class="text-danger"></span>
                                 </div>
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-12">
                                     <label asp-for="Note" class="form-label"></label>
                                     <input asp-for="Note" tabindex="12" class="form-control" />
                                     <span asp-validation-for="Note" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <input type="submit" tabindex="13" id="Submit" value="جديد" class="btn btn-primary" />
-                                <a asp-action="Index" tabindex="14" class="btn btn-light">رجوع الى القائمة</a>
+                                <input type="submit" value="حفظ" class="btn btn-primary" />
+                                <a asp-action="Index" class="btn btn-light" style="color;white">رجوع للقائمة </a>
+
                             </div>
                         </form>
                     </div>

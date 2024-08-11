@@ -3,42 +3,70 @@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
-    ViewData["Title"] = "الفئات الوظيفية";
+    ViewData["Title"] = " جديد";
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewData["Active"] = "AddEmployee";
     ViewData["Open"] = "Open2";
     ViewData["OpenOperation"] = "OpenOperation2";
 }
+<nav class="page-breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="../../../dashboard.html"> الرئيسة</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+            تهيئة النظام
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+             تهيئة التخطيط والتوصيف الوظيفي
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+            <a asp-action="Index">دليل الفئات الوظيفية </a>
 
-<h1>Create</h1>
+        </li>
+    </ol>
+</nav>
+<div class="card">
 
-<h4>FunctionalCategories</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="CategoriesName" class="control-label"></label>
-                <input asp-for="CategoriesName" class="form-control" />
-                <span asp-validation-for="CategoriesName" class="text-danger"></span>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>دليل الفئات الوظيفية   </h3>
+                    </div>
+                    <div class="card-body">
+                        <form asp-action="Create">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <div class="row mb-3">
+                                <div class="form-group col-md-6">
+                                    <label asp-for="CategoriesName" class="form-label"></label>
+                                    <input asp-for="CategoriesName" class="form-control" />
+                                    <span asp-validation-for="CategoriesName" class="text-danger"></span>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label asp-for="Notes" class="form-label"></label>
+                                    <input asp-for="Notes" class="form-control" />
+                                    <span asp-validation-for="Notes" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" value="حفظ" class="btn btn-primary" />
+                                <a asp-action="Index" class="btn btn-light" style="color;white">رجوع للقائمة </a>
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Notes" class="control-label"></label>
-                <input asp-for="Notes" class="form-control" />
-                <span asp-validation-for="Notes" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

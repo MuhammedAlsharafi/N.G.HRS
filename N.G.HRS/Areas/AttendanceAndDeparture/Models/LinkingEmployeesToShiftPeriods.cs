@@ -23,7 +23,6 @@ namespace N.G.HRS.Areas.AttendanceAndDeparture.Models
         //=
         [ForeignKey("DepartmentsId")]
         [Display(Name = "الادارة")]
-
         public int? DepartmentsId { get; set; }
         public Departments? Departments { get; set; }
         //=
@@ -34,19 +33,16 @@ namespace N.G.HRS.Areas.AttendanceAndDeparture.Models
         //=
         [ForeignKey("EmployeeId")]
         [Display(Name = "الموظف")]
-
         public int? EmployeeId { get; set; }
         public Employee? Employee { get; set; }
         //=
         [ForeignKey("PermanenceModelsId")]
         [Display(Name = "الدوام")]
-
         public int? PermanenceModelsId { get; set; }
         public PermanenceModels? PermanenceModels { get; set; }
         //=
         [ForeignKey("PeriodsId")]
         [Display(Name = "الفترة")]
-
         public int? PeriodsId { get; set; }
         public Periods? Periods { get; set; }
         //=

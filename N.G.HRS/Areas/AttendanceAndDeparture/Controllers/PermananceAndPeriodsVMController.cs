@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using N.G.HRS.Areas.AttendanceAndDeparture.Models;
@@ -24,7 +25,10 @@ namespace N.G.HRS.Areas.AttendanceAndDeparture.Controllers
             this._permanenceModelsRepository = permanenceModelsRepository;
 
         }
-        public async Task< IActionResult> Index()
+
+        [Authorize(Policy = "ViewPolicy")]
+
+        public async Task<IActionResult> Index()
         {
 
             await PopulateDropdownListsAsync();
@@ -44,7 +48,9 @@ namespace N.G.HRS.Areas.AttendanceAndDeparture.Controllers
 
         //    return View();
         //}
-        public async Task   <IActionResult> Create()
+        [Authorize(Policy = "AddPolicy")]
+
+        public async Task<IActionResult> Create()
         {
             await PopulateDropdownListsAsync();
             var viewModel = new PermanenceModelsAndPeriodsVM();
@@ -53,19 +59,20 @@ namespace N.G.HRS.Areas.AttendanceAndDeparture.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "AddPolicy")]
         public async Task<IActionResult> Create(PermanenceModelsAndPeriodsVM PVM)
         {
 
-           if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 try
                 {
-                        await PopulateDropdownListsAsync();
+                    await PopulateDropdownListsAsync();
 
-                    
+
                     if (PVM.permanenceModels != null)
                     {
-                        if(PVM.permanenceModels.FromDate >  PVM.permanenceModels.ToDate)
+                        if (PVM.permanenceModels.FromDate > PVM.permanenceModels.ToDate)
                         {
                             TempData["Error"] = "يجب ان يكون تاريخ الانتهاء اكبر من تاريخ البدء";
                             return View(PVM);
@@ -96,13 +103,14 @@ namespace N.G.HRS.Areas.AttendanceAndDeparture.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "AddPolicy")]
         public async Task<IActionResult> CreatePeriods(PermanenceModelsAndPeriodsVM data)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    if (data.periods != null )
+                    if (data.periods != null)
                     {
                         // Assuming PopulateDropdownListsAsync is implemented elsewhere:
                         await PopulateDropdownListsAsync(); // Call if necessary
@@ -113,9 +121,9 @@ namespace N.G.HRS.Areas.AttendanceAndDeparture.Controllers
                         //foreach (var period in periodsList)
                         //{
 
-                            await _periodsRepository.AddAsync(data.periods);
+                        await _periodsRepository.AddAsync(data.periods);
                         //}
-                        
+
 
                         TempData["Success"] = "تم الحفظ بنجاح"; // Success message
 
@@ -127,7 +135,7 @@ namespace N.G.HRS.Areas.AttendanceAndDeparture.Controllers
                     }
                 }
                 catch (Exception ex)
-                { 
+                {
                     // Log the exception and provide more informative error message
                     TempData["Error"] = "حدث خطأ أثناء محاولة إضافة الفترات"; // Generic user message
 

@@ -1,4 +1,5 @@
 ﻿using BioMetrixCore;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -62,12 +63,16 @@ namespace N.G.HRS.Areas.MaintenanceControl.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "ViewPolicy")]
+
         public async Task<IActionResult> Index()
         {
             await PopulateDropdownListsAsync();
             return View();
         }
         [HttpGet]
+        [Authorize(Policy = "AddPolicy")]
+
         public async Task<IActionResult> Create()
         {
             await PopulateDropdownListsAsync();
@@ -75,6 +80,7 @@ namespace N.G.HRS.Areas.MaintenanceControl.Controllers
             return View();
         }
         [HttpPost]
+        [Authorize(Policy = "AddPolicy")]
         public async Task<IActionResult> Create(UplodeFingerPrintFromDeviceVM deviceVM)
         {
             await PopulateDropdownListsAsync();
@@ -225,7 +231,7 @@ namespace N.G.HRS.Areas.MaintenanceControl.Controllers
                             if (machine.IndRegID != 0)
                             {
                                 var employee = _context.employee
-                                    .Where(x => x.EmployeeNumber == machine.IndRegID.ToString()).Include(x => x.Departments).Include(x => x.Sections)
+                                    .Where(x => x.EmployeeNumber == machine.IndRegID).Include(x => x.Departments).Include(x => x.Sections)
                                     .Select(x => new { emp = x.EmployeeName, dep = x.DepartmentsId, sec = x.SectionsId }).FirstOrDefault();
                                 //var employee = _context.employee.Where(x => x.EmployeeNumber == info.EnrollNumber);
                                 if (employee != null)
@@ -237,7 +243,7 @@ namespace N.G.HRS.Areas.MaintenanceControl.Controllers
                                     attLog.DepartmentId = employee.dep;
                                     attLog.SectionId = employee.sec;
                                     attLog.DateTimeRecord = machine.DateTimeRecord;
-                                    attLog.TimeOnlyRecord = new DateTime(2000,01,01,dateTime.Hour, dateTime.Minute, dateTime.Second);
+                                    attLog.TimeOnlyRecord = new DateTime(2000, 01, 01, dateTime.Hour, dateTime.Minute, dateTime.Second);
                                     attLog.DateOnlyRecord = new DateOnly(dateTime.Year, dateTime.Month, dateTime.Day);
                                     attLog.State = "تحميل من جهاز البصمة";
                                     attLog.MachineNumber = machinrNo.DevicesNumber;
@@ -252,7 +258,7 @@ namespace N.G.HRS.Areas.MaintenanceControl.Controllers
                                     //    State = "تحميل من جهاز البصمة",
                                     //    MachineNumber = machinrNo.DevicesNumber,
                                     //};
-
+                               
                                     bool m = _context.MachineInfo.Any(x => x.IndRegID == machine.IndRegID && x.DateTimeRecord == machine.DateTimeRecord);
                                     if (m)
                                     {
@@ -291,11 +297,11 @@ namespace N.G.HRS.Areas.MaintenanceControl.Controllers
                             return Json(1);
                         }
                     }
-                 
+
                 }
                 return Json("حدث خطئ اثناء العملية ! ...");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return Json(ex.Message);
             }

@@ -30,11 +30,11 @@ namespace N.G.HRS.Areas.MaintenanceControl.Models
         [Display(Name = "التاريخ")]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [DataType(DataType.Date)]
-        public DateTime Date { get; set; }=DateTime.Now;
+        public DateTime Date { get; set; } = DateTime.Now;
         [Required(ErrorMessage = "هذا الحقل مطلوب")]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [DataType(DataType.Date)]
-        [Display(Name = "من تاريخ")]   
+        [Display(Name = "من تاريخ")]
         public DateTime FromDate { get; set; }
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [DataType(DataType.Date)]
@@ -62,7 +62,7 @@ namespace N.G.HRS.Areas.MaintenanceControl.Models
         [Display(Name = "بين تاريخين")]
 
         public bool BetweenToDate { get; set; }
-        [Display(Name = "الملاحظة")]
+        [Display(Name = "الملاحظات")]
         public string? Note { get; set; }
         public bool IsProccessed { get; set; }
 

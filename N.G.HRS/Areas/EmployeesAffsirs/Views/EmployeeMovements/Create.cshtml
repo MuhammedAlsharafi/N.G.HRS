@@ -1,73 +1,165 @@
 ﻿@model N.G.HRS.Areas.EmployeesAffsirs.Models.EmployeeMovements
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
-    ViewData["Title"] = "تبديل الموظفين";
+    ViewData["Title"] = "جديد ";
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewData["Active"] = "AddEmployee";
     ViewData["Open"] = "Open2";
     ViewData["OpenOperation"] = "OpenOperation2";
 }
+<nav class="page-breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="../../../dashboard.html"> الرئيسة</a>
+        </li>
 
+        <li class="breadcrumb-item active" aria-current="page">
+تهيئة النظام        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+            القرارات الادارية
+        </li> 
+        <li class="breadcrumb-item active" aria-current="page">
+            احركة التوظيف
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+            <a asp-action="Index">دليل  التنقل الوظيفي </a>
 
-<h1>تبديل الموظفين</h1>
+        </li>
+    </ol>
+</nav>
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+            <div class="card-header">
+                <h3>دليل  التنقل الوظيفي </h3>
+            </div>
+            <div class="col-md-12">
+                <form asp-action="Create">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="row mb-3">
+                        <div class="form-group col-md-6 mb-3">
+                            <label asp-for="EmployeeId" class="control-label"></label>
+                            <select asp-for="EmployeeId" id="EmployeeId" class=" js-example-basic-single form-select" asp-items="@(ViewData["EmployeeId"] as SelectList)">
+                                <option value="" disabled></option>
+                            </select>
+                        </div>
+                        <div class="form-group  col-md-6 mb-3">
+                            <label asp-for="jopdescriptionId" class="control-label"></label>
+                            <select asp-for="jopdescriptionId" id="jopdescriptionId" class=" js-example-basic-single form-select" asp-items="@(ViewData["jopdescriptionId"] as SelectList)">
+                                <option value="" disabled></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="form-group  col-md-6 mb-3">
+                            <label asp-for="CurrentJop" class="control-label"></label>
+                            <input asp-for="CurrentJop" id="CurrentJop" class="form-control" />
+                            <span asp-validation-for="CurrentJop" class="text-danger"></span>
+                        </div>
+                        <div class="form-group  col-md-6 mb-3">
+                            <label asp-for="LastJop" class="control-label"></label>
+                            <input asp-for="LastJop" id="LastJop" class="form-control" />
+                            <span asp-validation-for="LastJop" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-6 col-12 mb-3">
+                            <label asp-for="Date" class="form-label"></label>
+                            <div class="input-group  flatpickr-date" id="flatpickr-date">
+                                <input asp-for="Date" id="DateOfEmployment" class="js-example-basic-single form-control" placeholder="أدخل التاريخ" data-input>
+                                <span class="input-group-text input-group-addon" data-toggle>
+                                    <i data-feather="calendar"></i>
+                                </span>
+                            </div>
+                            <span asp-validation-for="Date" class="text-danger"></span>
 
-@* <h4>EmployeeMovements</h4>
- *@<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Date" class="control-label"></label>
-                <input asp-for="Date" class="form-control" />
-                <span asp-validation-for="Date" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6 col-12 mb-3">
+                            <label asp-for="DateDown" class="form-label"></label>
+                            <div class="input-group  flatpickr-date" id="flatpickr-date">
+                                <input asp-for="DateDown" id="DateOfEmployment" class="js-example-basic-single form-control" placeholder="أدخل التاريخ" data-input>
+                                <span class="input-group-text input-group-addon" data-toggle>
+                                    <i data-feather="calendar"></i>
+                                </span>
+                            </div>
+                            <span asp-validation-for="DateDown" class="text-danger"></span>
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Note" class="control-label"></label>
+                        <input asp-for="Note" class="form-control" />
+                        <span asp-validation-for="Note" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="submit" value="حفظ" class="btn btn-primary" />
+                        <a asp-action="Index" class="btn btn-light" style="color;white">رجوع للقائمة </a>
+
+                    </div>
+                </form>
+
             </div>
-            <div class="form-group">
-                <label asp-for="DateDown" class="control-label"></label>
-                <input asp-for="DateDown" class="form-control" />
-                <span asp-validation-for="DateDown" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Note" class="control-label"></label>
-                <input asp-for="Note" class="form-control" />
-                <span asp-validation-for="Note" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="EmployeeId" class="control-label"></label>
-                <select asp-for="EmployeeId" id="EmployeeId" class="form-control" asp-items="@(ViewData["EmployeeId"] as SelectList)">
-                    <option value="">--اختر الموظف--</option>
-                </select>
-            </div>
-            <div class="form-group" >
-                <label asp-for="jopdescriptionId" class="control-label"></label>
-                <select asp-for="jopdescriptionId"  id="jopdescriptionId" class="form-control" asp-items="@(ViewData["jopdescriptionId"] as SelectList)">
-                    <option value="">--اختر الوظيفة--</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label asp-for="CurrentJop" class="control-label"></label>
-                <input asp-for="CurrentJop" class="form-control" />
-                <span asp-validation-for="CurrentJop" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="LastJop" class="control-label"></label>
-                <input asp-for="LastJop" class="form-control" />
-                <span asp-validation-for="LastJop" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" id="submit" value="حفظ" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
 </div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+<script>
+        $(document).ready(function () {
+            $('#EmployeeId').change(function () {
+                var employeeId = $(this).val();
+                if (employeeId) {
+                    $.ajax({
+                        url: '@Url.Action("GetEmployeeCurrentJob", "EmployeeMovements", new { area = "EmployeesAffsirs" })',
+                        type: 'GET',
+                        data: { employeeId: employeeId },
+                        success: function (data) {
+                            $('#CurrentJop').val(data.jobName);
+                            $('#LastJop').val(data.previousJob);
+                            $('#CurrentJop').data('previous-job', data.jobName); // Update data attribute with current job
+                            $('#jopdescriptionId').val(data.jobDescriptionId);
+                        },
+                        error: function () {
+                            $('#CurrentJop').val('');
+                            $('#LastJop').val('');
+                            $('#jopdescriptionId').val('');
+                        }
+                    });
+                } else {
+                    $('#CurrentJop').val('');
+                    $('#LastJop').val('');
+                    $('#jopdescriptionId').val('');
+                }
+            });
+
+            $('#jopdescriptionId').change(function () {
+                var newJob = $(this).find("option:selected").text();
+                $('#LastJop').val($('#CurrentJop').val()); // Set current job as previous job
+                $('#CurrentJop').val(newJob); // Set new job as current job
+                $('#CurrentJop').data('previous-job', newJob); // Update data attribute with new job
+                var employeeId = $('#EmployeeId').val();
+                if (employeeId) {
+                    $.ajax({
+                        url: '@Url.Action("UpdateEmployeeJob", "EmployeeMovements", new { area = "EmployeesAffsirs" })',
+                        type: 'POST',
+                        dataType: 'json',
+                        data: { employeeId: employeeId, newJob: newJob },
+                        success: function () {
+                            console.log('تم تحديث الوظيفة بنجاح');
+                        },
+                        error: function () {
+                            console.log('حدث خطأ أثناء تحديث الوظيفة');
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+
 <script>
     document.getElementById("submit").addEventListener("click", function (event) {
         const EmployeeId = document.getElementById("EmployeeId");
@@ -87,9 +179,27 @@
             });
         }
     });
+    document.getElementById("submit").addEventListener("click", function (event) {
+        const jopdescriptionId = document.getElementById("jopdescriptionId");
+        if (jopdescriptionId.value === "") {
+            event.preventDefault(); // Prevent form submission
+            Swal.fire({
+                icon: "error",
+                title: "خطئ....",
+                text: "رجاء أختر   الوظيفة",
+                showConfirmButton: true,
+                allowOutsideClick: false,
+                timer: 5000, // زمن الإغلاق التلقائي بالميللي ثانية
+                timerProgressBar: true,
+                didOpen: () => {
+                    Swal.getHtmlContainer().querySelector('audio').remove();
+                }
+            });
+        }
+    });
 
 </script>
-<script>
+@* <script>
     document.getElementById("submit").addEventListener("click", function (event) {
         const jopdescriptionId = document.getElementById("jopdescriptionId");
         if (jopdescriptionId.value === "") {
@@ -126,26 +236,5 @@
         });
     });
 
-</script>
-
-@* <script>
-    // التقاط حدث تغيير القيمة لحقل الوظيفة
-    document.getElementById('jopdescriptionId').addEventListener('change', function () {
-        // الحصول على القيمة المحددة لحقل الوظيفة
-        var selectedJobText = this.options[this.selectedIndex].text;
-
-        // الحصول على عناصر DOM لحقول CurrentJop و LastJop
-        var currentJopInput = document.getElementById('CurrentJop');
-        var lastJopInput = document.getElementById('LastJop');
-
-        // تحديث قيم CurrentJop و LastJop بناءً على القيمة المحددة للوظيفة
-        var currentJopValue = currentJopInput.value;
-        var lastJopValue = selectedJobText;
-        currentJopInput.value = selectedJobText;
-        lastJopInput.value = currentJopValue;
-    });
-    // ===============================================================
 </script> *@
-
-
-
+}

@@ -16,7 +16,7 @@ namespace N.G.HRS.Areas.OrganizationalChart.Models
         [Required(ErrorMessage = "هذا الحقل مطلوب")]
         [StringLength(150)]
         [Display(Name = "الادارة")]
-        public string SubAdministration { get; set; }
+        public string? SubAdministration { get; set; }
         [StringLength(255)]
         [Display(Name = "ملاحظات")]
         public string? Notes { get; set; }
@@ -39,7 +39,12 @@ namespace N.G.HRS.Areas.OrganizationalChart.Models
         [ForeignKey("SectorsId")]
         [Display(Name = "القطاع")]
         public int? SectorsId { get; set; }
+        [Display(Name ="القطاع")]
         public Sectors? Sectors { get; set; }
 
+        internal static Employee GitDepartment(int id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -1,14 +1,31 @@
 ﻿@model N.G.HRS.Areas.MaintenanceControl.Models.StaffVacations
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
-    ViewData["Title"] = "Employee";
+    ViewData["Title"] = "أجازات الموظفين";
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewData["Active"] = "AddEmployee";
     ViewData["Open"] = "Open2";
     ViewData["OpenOperation"] = "OpenOperation2";
 }
 
+<nav class="page-breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="../../../dashboard.html"> الرئيسة</a>
+        </li>
 
+        <li class="breadcrumb-item active" aria-current="page">
+            مراقبة الدوام
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+            العمليات
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+            <a asp-action="Index"> أجازات الموظفين </a>
+
+        </li>
+    </ol>
+</nav>
 
 <div class="card">
 
@@ -175,7 +192,9 @@
                             <input type="hidden" asp-for="Expendables" id="Expendables" class="form-control" /> مستهلك
                             <input type="hidden" asp-for="Residual" id="Residual" class="form-control" /> متبقي  *@
                             <div class="form-group">
-                                <input type="button" id="Submit" value="Create" class="btn btn-primary" />
+                                <input type="submit" value="حفظ" class="btn btn-primary" />
+                                <a asp-action="Index" class="btn btn-light" style="color;white">رجوع للقائمة </a>
+
                             </div>
                         </form>
                     </div>
@@ -249,9 +268,7 @@
 
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+
 
 @section Scripts {
     @{
@@ -342,12 +359,12 @@
                                 title: "تاريخ البداية يجب ان يكون اصغر من تاريخ النهاية",
                             });
                         }
-                        if ($("#FromDate").val() == $("#ToDate").val()) {
+                        if ($("#FromDate").val() == $("#ToDate").val() && Connectcheckbox.checked) {
                             Swal.fire({
                                 icon: "error",
                                 title: "اذا كانت الاجازة في نفس اليوم يجب ايقاف تحديد خيار <span class='text-danger'>متصل</span>",
                             });
-                                                    $("#ToDate").val("");
+                            $("#ToDate").empty();
 
                         }
                     } else {
@@ -881,6 +898,7 @@
                 }
                 //=
                 if (!(Connectcheckbox.checked) && $("#ToDate").val() != $("#FromDate").val()) {
+                    $("#ToDate").empty();
                     Swal.fire({
                         icon: "error",
                         title: "اذا لم يكن الخيار <span class='text-danger'>متصل</span> مفعل ,إذا يجب ان يكون تاريخ البداية يساوي تاريخ النهاية!!",

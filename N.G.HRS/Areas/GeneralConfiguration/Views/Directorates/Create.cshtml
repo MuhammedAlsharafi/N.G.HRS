@@ -2,159 +2,512 @@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
-    ViewData["Title"] = "نماذج الدوام";
+    ViewData["Title"] = " المديريات";
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewData["Active"] = "AddEmployee";
     ViewData["Open"] = "Open2";
     ViewData["OpenOperation"] = "OpenOperation2";
 }
-<h1>Create</h1>
-
-<h4>Directorate</h4>
-<hr />
+<nav class="page-breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="../../../dashboard.html"> الرئيسة</a></li>
+        <li class="breadcrumb-item active" aria-current="page"> تهيئة النظام</li>
+        <li class="breadcrumb-item active" aria-current="page"> التهيئة العامة</li>
+        <li class="breadcrumb-item active" aria-current="page"> <a asp-action="Index">المديريات</a>              </li>
+    </ol>
+</nav>
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" id="Directorate" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
+    <div class="col-md-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                
+                        <div class="card-header">
+                            <h3>المديريات</h3>
+                        </div>
+                        <form asp-action="Create">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <label asp-for="Name" class="control-label"></label>
+                                    <input asp-for="Name" id="Directorate" class="form-control" />
+                                    <span asp-validation-for="Name" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-group col-md-6">
+                                    <label asp-for="GovernorateId" class="control-label"></label>
+                                    <select asp-for="GovernorateId" class="js-example-basic-single form-select" asp-items="ViewBag.GovernorateId" as SelectList>
+
+                                        <option value="" selected disabled></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-12 mb-3">
+                                <label asp-for="Notes" class="control-label"></label>
+                                <input asp-for="Notes" id="DirectorateNotes" class="form-control" />
+                                <span asp-validation-for="Notes" class="text-danger"></span>
+                            </div>
+                         @*    <div class="form-group">
+                                <input type="submit" id="submit" value="اضافة" class="btn btn-primary" />
+                                <input type="submit" value="حفظ البيانات" class="btn btn-primary me-2" id="saveDataBtn" style="display:none" />
+                                <a asp-action="Index" class="btn btn-primary">الرجوع الى القائمة</a>
+                                <button type="button" id="clearTableBtn" style="display:none" class="btn btn-danger">حذف الكل</button>
+                                <button type="button" class="btn btn-primary" id="showFileInDirectorate">استيراد ملف Excel</button>
+                                <button type="button" class="btn btn-primary" id="exportToExcelDirectorate">تصدير إلى Excel</button>
+                            </div> *@
+                            @* //========================== *@
+                            <div class="flexable mb-3">
+
+                                <div>
+                                    <input type="submit" id="submit" value="اضافة" class="btn btn-primary" />
+
+                                </div>
+                                <div>
+                                    <a asp-action="Index" class="btn btn-light "> رجوع للقائمة</a>
+                                </div>
+                                <div>
+                                    <div class="dropdown">
+                                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            @* <i data-feather="more-vertical"></i> *@
+                                        </button>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                            <button type="button" class="dropdown-item" id="showFileInDirectorate">استيراد ملف Excel</button>
+                                            <button type="button" class="dropdown-item" id="exportToExcelDirectorate">تصدير إلى Excel</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <input type="submit" value="حفظ البيانات" class="btn btn-primary me-2" id="saveDataBtn" style="display: none" />
+                                </div>
+                                <div>
+                                    <button type="button" id="clearTableBtn" style="display:none" class="btn btn-danger">حذف الكل</button>
+                                </div>
+                            </div> 
+                        </form>
+
+                      
+                        @*         //============================استيراد ملف اكسل الى قاعدة البيانات=======
+                        *@
+
+                     
+                        @using (Html.BeginForm("ImportDirectorate", "Directorates", FormMethod.Post, new { enctype = "multipart/form-data", id = "ImportDirectorate" }))
+                        {
+                            <div id="fileInputDirectorate" class="mb-3" style="display: none;">
+                                <input type="file" name="file" class="form-control" accept=".xls,.xlsx" id="fileInputDirectorateInput">
+                                <button type="button" class="btn btn-primary" id="uploadBtnDirectorate" style="display: none;">تحميل الملف</button>
+                                <div id="fileErrorDirectorate" class="text-danger"></div>
+                            </div>
+                        }
+                      
+                    
             </div>
-            <div class="form-group">
-                <label asp-for="Notes" class="control-label"></label>
-                <input asp-for="Notes" id="DirectorateNotes" class="form-control" />
-                <span asp-validation-for="Notes" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="GovernorateId"  class="control-label"></label>
-                <select asp-for="GovernorateId" class="js-example-basic-single form-select" asp-items="ViewBag.GovernorateId" as SelectList>
-@*                     <select asp-for="GovernorateId" class="js-example-basic-single  form-select" asp-items="@(ViewData["Employee"] as SelectList)">
- *@
-                    <option value="">   </option>
-                </select>
-            </div>
-            <div class="form-group">
-                <input type="submit" id="submit" value="حفظ " class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+
 
 <!-- جدول البيانات المؤقتة -->
-<table id="temporaryTable" class="table" style="display:none;">
-    <thead>
-        <tr>
-            <th>#</th>
-            <th> المديريات</th>
-            <th>الملاحظات</th>
-            <th>المحافظة</th>
-        </tr>
-    </thead>
-    <tbody></tbody>
-</table>
 
-<input type="submit" value=" حفظ البيانات " class="btn btn-primary me-2" id="saveDataBtn" />
+<div id="table" class="row" style="display:none;">
+    <div class="col-md-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h6 class="card-title headerStyle">الفترات</h6>
+                <div class="table-responsive">
+                    <table id="temporaryTable" class="table" >
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th> المديريات</th>
+                                <th>المحافظة</th>
+                                <th>الملاحظات</th>
+                                <th>#</th>
 
-
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+
+    <script type="text/javascript">
+        document.getElementById('showFileInDirectorate').addEventListener('click', function () {
+            var fileInputContainerDirectorate = document.getElementById('fileInputDirectorate');
+            fileInputContainerDirectorate.style.display = 'block';
+        });
+
+        document.getElementById('fileInputDirectorateInput').addEventListener('change', function () {
+            var file = this.files[0];
+            var fileNameDirectorate = this.value.toLowerCase();
+            var fileErrorDirectorate = document.getElementById('fileErrorDirectorate');
+            var uploadBtnDirectorate = document.getElementById('uploadBtnDirectorate');
+
+            if (file && file.size > 0) {
+                if (fileNameDirectorate.endsWith('.xls') || fileNameDirectorate.endsWith('.xlsx')) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        var data = new Uint8Array(e.target.result);
+                        var workbook = XLSX.read(data, { type: 'array' });
+                        var firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+                        var rows = XLSX.utils.sheet_to_json(firstSheet, { header: 1 });
+
+                        var requiredColumns = ["ID", "المديرية", "الملاحظة", "المحافظة"];
+                        var header = rows[0];
+                        var isHeaderValid = header && requiredColumns.every((col, index) => header[index] === col);
+
+                        if (isHeaderValid) {
+                            var isDataPresent = rows.length > 1 && rows.slice(1).some(row => row.some(cell => cell));
+
+                            if (isDataPresent) {
+                                uploadBtnDirectorate.style.display = 'inline-block'; // عرض زر التحميل
+                                fileErrorDirectorate.style.display = 'none'; // إخفاء رسالة الخطأ
+                            } else {
+                                showError("الملف فارغ: الملف لا يحتوي على بيانات.");
+                            }
+                        } else {
+                            var missingColumns = requiredColumns.filter((col, index) => !header[index] || header[index] !== col);
+                            showError("الملف لا يحتوي على الأعمدة المطلوبة:", missingColumns);
+                        }
+                    };
+                    reader.readAsArrayBuffer(file);
+                } else {
+                    showError("يجب اختيار ملف بصيغة Excel فقط!");
+                }
+            } else {
+                showError("يرجى تحديد ملف غير فارغ.");
+            }
+        });
+
+        function showError(message, missingColumns = []) {
+            var uploadBtn = document.getElementById('uploadBtnDirectorate');
+            var fileError = document.getElementById('fileErrorDirectorate');
+            uploadBtn.style.display = 'none';
+            fileError.style.display = 'block';
+
+            var errorContent = `<p>${message}</p>`;
+            if (missingColumns.length > 0) {
+                errorContent += `<table class="table table-bordered" id="missingColumnsTableDirectorate"><thead><tr><th>الأعمدة الناقصة</th></tr></thead><tbody>`;
+                missingColumns.forEach(col => {
+                    errorContent += `<tr><td>${col}</td></tr>`;
+                });
+                errorContent += `</tbody></table>`;
+            }
+
+            fileError.innerHTML = errorContent;
+            document.getElementById('fileInputDirectorateInput').value = '';
+
+            Swal.fire({
+                icon: 'error',
+                title: message,
+                html: errorContent,
+                showConfirmButton: false,
+                timer: 8000,
+                willClose: () => {
+                    // Hide the missing columns table after the message disappears
+                    var table = document.getElementById('missingColumnsTableDirectorate');
+                    if (table) {
+                        table.style.display = 'none';
+                    }
+                    fileError.style.display = 'none'; // Hide the error div
+                }
+            });
+        }
+
+        document.getElementById('uploadBtnDirectorate').addEventListener('click', function (event) {
+            event.preventDefault(); // منع السلوك الافتراضي للزر
+            Swal.fire({
+                title: 'هل تريد استيراد البيانات من ملف Excel؟',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'نعم',
+                cancelButtonText: 'لا'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    var form = document.getElementById('ImportDirectorate');
+                    form.submit(); // تقديم النموذج يدويا
+                }
+            });
+        });
+
+        document.getElementById('exportToExcelDirectorate').addEventListener('click', function () {
+            Swal.fire({
+                title: 'هل تريد تصدير ملف Excel؟',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'نعم',
+                cancelButtonText: 'لا'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = '@Url.Action("ExportToExcelDirectorate", "Directorates")';
+                }
+            });
+        });
+    </script>
 
 
     <script>
+
         $(document).ready(function () {
             var counter = 1;
 
-            // دالة تقوم بحفظ البيانات المعروضة في الجدول قبل إرسالها إلى الخادم
+            // التحقق من وجود المديرية
+            function CheckDirectorateExists(directorate, callback) {
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("CheckDirectorateyExists", "Directorates")",
+                    data: { directorate: directorate },
+                    success: function (response) {
+                        callback(response.exists);
+                    },
+                    error: function (xhr, status, error) {
+                        console.log("حدث خطأ أثناء التحقق من وجود المديرية: " + error);
+                    }
+                });
+            }
+
+
+
+
+            // حفظ البيانات المعروضة في الجدول
             $("#saveDataBtn").click(function () {
-                $("#temporaryTable tr").each(function () {
-                    var directorate = $(this).find("td:eq(1)").text();
-                    var notes = $(this).find("td:eq(2)").text();
-                    var governorateName = $(this).find("td:eq(3)").text();     // استخراج اسم المحافظة
-                    var governorateId = $(this).find("td:eq(4)").text();// استخراج Id الدولة
-                    if (directorate ) {
-                        SaveDirectorateyData(directorate, notes ? notes : "" , governorateId);
+                Swal.fire({
+                    title: 'هل أنت متأكد أنك تريد حفظ جميع البيانات؟',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonText: 'نعم',
+                    cancelButtonText: 'لا'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $("#temporaryTable tr").each(function () {
+                            var directorate = $(this).find("td:eq(1)").text();
+                            var notes = $(this).find("td:eq(2)").text();
+                            var governorateId = $(this).find("td:eq(4)").text();
+
+                            if (directorate && governorateId) {
+                                SaveDirectorateyData(directorate, notes ? notes : "", governorateId);
+                            }
+                            // عرض رسالة بعد حفظ البيانات بنجاح
+
+
+                        });
                     }
                 });
             });
+
+            function CheckDirectorateInTable(directorate) {
+                var exists = false;
+                $("#temporaryTable tbody tr").each(function () {
+                    var currentDirectorate = $(this).find("td:eq(1)").text();
+                    if (currentDirectorate === directorate) {
+                        exists = true;
+                        return false; // توقف عن التحقق
+                    }
+                });
+                return exists;
+            }
+
 
             $("form").submit(function (event) {
                 event.preventDefault();
                 var directorate = $("#Directorate").val();
                 var notes = $("#DirectorateNotes").val();
                 var governorateId = $("#GovernorateId").val();
-                var governorateName = $("#GovernorateId option:selected").text(); // استخراج اسم الدولة
+                var governorateName = $("#GovernorateId option:selected").text();
 
-               
-
-                // تحقق فقط من مديرية لا غير
-                if (directorate) {
-                    $("#temporaryTable tbody").append(
-                        "<tr>" +
-                        "<td>" + counter + "</td>" +
-                        "<td contenteditable='true' class='directorate'>" + directorate + "</td>" +
-                        "<td contenteditable='true' class='notes'>" + notes + "</td>" +
-                        "<td contenteditable='true' class='governorateName'>" + governorateName + "</td>" + // عرض اسم الدولة
-                        "<td style='display:none' class='governorateId'>" + governorateId + "</td>" + // إضافة Id الدولة (لإرساله إلى الخادم)
-                        "<td>" + "<button type='button' class='btn btn-danger delete-row'>Delete</button>" + "</td>" +
-                        "</tr>"
-                    );
-                    counter++;
-                    $("#Directorate").val('');
-                    $("#DirectorateNotes").val('');
-                    $("#GovernorateId").val('');
-
-                    $("#temporaryTable").show();
+                // التحقق من وجود المديرية في الجدول المؤقت قبل التحقق من قاعدة البيانات
+                if (CheckDirectorateInTable(directorate)) {
+                    Swal.fire({
+                        icon: "error",
+                        title: "اسم المديرية موجود بالفعل في الجدول المؤقت"
+                    });
+                    return;
                 }
+
+                // التحقق من وجود المديرية قبل إرسال النموذج
+                CheckDirectorateExists(directorate, function (exists) {
+                    if (exists) {
+                        // عرض رسالة بوجود المديرية
+                        Swal.fire({
+                            icon: "error",
+                            title: "اسم المديرية موجود بالفعل في قاعدة البيانات"
+                        });
+                    } else if (directorate && governorateId) {
+                        $("#temporaryTable tbody").append(
+                            "<tr>" +
+                            "<td>" + counter + "</td>" +
+                            "<td>" + directorate + "</td>" +
+                            "<td>" + notes + "</td>" +
+                            "<td>" + governorateName + "</td>" +
+                            "<td style='display:none' class='governorateId'>" + governorateId + "</td>" +
+                            "<td>" + "<button type='button' class='btn btn-danger delete-row'>Delete</button>" + "</td>" +
+                            "</tr>"
+                        );
+                        counter++;
+                        $("#Directorate").val('');
+                        $("#DirectorateNotes").val('');
+                        // $("#GovernorateId").val('');
+
+                        $("#saveDataBtn").show();
+                        $("#table").show();
+                        $("#clearTableBtn").show(); // إظهار زر حذف الكل بعد إضافة العنصر الأول
+                    }
+                });
             });
 
+            // حذف صف من الجدول
             $(document).on("click", ".delete-row", function () {
                 $(this).closest("tr").remove();
                 counter--;
-            });
-        });
 
-        function SaveDirectorateyData(directorate, notes, governorateId) {
-            $.ajax({
-                type: "POST",
-                url: "@Url.Action("SaveDirectorateyData", "Directorates")",
-                data: { directorate: directorate, notes: notes, governorateId: governorateId },
-                success: function (response) {
-                    // alert("تم حفظ البيانات بنجاح!");
-                    // لاحاجة لعرض رسالة النجاح، فقط قم بتوجيه المستخدم إلى الصفحة Index
-                    window.location.href = "@Url.Action("Index")";
-                },
-                error: function (xhr, status, error) {
-                    alert("حدث خطأ أثناء حفظ البيانات: " + error);
+                Swal.fire(
+                    'تم الحذف!',
+                    'تم حذف  البيانات بنجاح.',
+                    'success'
+                );
+
+                if ($("#temporaryTable tbody tr").length === 0) {
+                    $("#saveDataBtn").hide();
+                    $("#clearTableBtn").hide(); // إخفاء زر حذف الكل إذا لم يكن هناك بيانات
+                    $("#table").hide();
                 }
             });
-        }
 
-
-        $("#submit").click(function () {
-            var GovernorateId = $("#GovernorateId").val();
-            var select = $("#select").val();
-            if (GovernorateId == "") {
-                event.preventDefault();
+            // حذف البيانات من الجدول
+            $("#clearTableBtn").click(function () {
                 Swal.fire({
-                    icon: "error",
-                    title: "الرجاء أختيار المحافظة",
-                });
-                event.preventDefault();
+                    title: 'هل أنت متأكد؟',
+                    text: "سيتم حذف جميع البيانات!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'نعم، احذف الكل'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $("#temporaryTable tbody").empty(); // حذف كل عناصر الجدول في الجسم
+                        counter = 1; // إعادة تعيين العداد إلى القيمة الافتراضية
+                        $("#saveDataBtn").hide(); // إخفاء زر حفظ البيانات
+                        $("#clearTableBtn").hide(); // إخفاء زر حذف الكل بعد الحذف
+                        $("#table").hide();
 
+                        Swal.fire(
+                            'تم الحذف!',
+                            'تم حذف جميع البيانات بنجاح.',
+                            'success'
+                        )
+                    }
+                });
+            });
+
+            // حذف صف من الجدول
+            $(document).on("click", ".delete-row", function () {
+                $(this).closest("tr").remove();
+                counter--;
+
+                Swal.fire(
+                    'تم الحذف!',
+                    'تم حذف  البيانات بنجاح.',
+                    'success'
+                );
+
+                if ($("#temporaryTable tbody tr").length === 0) {
+                    $("#saveDataBtn").hide();
+                    $("#clearTableBtn").hide(); // إخفاء زر حذف الكل إذا لم يكن هناك بيانات
+                    $("#table").hide();
+                }
+            });
+
+            // حذف البيانات من الجدول
+            $("#clearTableBtn").click(function () {
+                Swal.fire({
+                    title: 'هل أنت متأكد؟',
+                    text: "سيتم حذف جميع البيانات!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'نعم، احذف الكل'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $("#temporaryTable tbody").empty(); // حذف كل عناصر الجدول في الجسم
+                        counter = 1; // إعادة تعيين العداد إلى القيمة الافتراضية
+                        $("#saveDataBtn").hide(); // إخفاء زر حفظ البيانات
+                        $("#clearTableBtn").hide(); // إخفاء زر حذف الكل بعد الحذف
+                        $("#table").hide();
+
+                        Swal.fire(
+                            'تم الحذف!',
+                            'تم حذف جميع البيانات بنجاح.',
+                            'success'
+                        )
+                    }
+                });
+            });
+
+
+            // حفظ البيانات المدخلة
+            function SaveDirectorateyData(directorate, notes, governorateId) {
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("SaveDirectorateyData", "Directorates")",
+                    data: { directorate: directorate, notes: notes, governorateId: governorateId },
+                    success: function (response) {
+                        Swal.fire({
+                            title: 'تم الحفظ!',
+                            text: 'تم حفظ جميع البيانات بنجاح.',
+                            icon: 'success'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = "@Url.Action("Index")";
+                            }
+                        });
+                    },
+                    error: function (xhr, status, error) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'حدث خطأ أثناء حفظ البيانات',
+                            text: error
+                        });
+                    }
+                });
             }
-           
+
         });
 
+         // التحقق من اختيار المحافظة قبل الإرسال
+            $("#submit").click(function () {
+                var GovernorateId = $("#GovernorateId").val();
+                if (GovernorateId == "") {
+                    event.preventDefault();
+                    Swal.fire({
+                        icon: "error",
+                        title: "الرجاء أختيار المحافظة",
+                    });
+                }
+            });
+
+
+            // التحقق من اختيار المحافظة قبل الإرسال
+            $("#submit").click(function () {
+                var Directorate = $("#Directorate").val();
+                if (Directorate == "") {
+                    event.preventDefault();
+                    Swal.fire({
+                        icon: "error",
+                        title: "الرجاء أختيار  المديرية",
+                    });
+                }
+            });
 
     </script>
-
-    
-
 }

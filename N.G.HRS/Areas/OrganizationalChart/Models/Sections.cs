@@ -32,6 +32,7 @@ namespace N.G.HRS.Areas.OrganizationalChart.Models
         //=
         public List<EmployeeAdvances>? EmployeeAdvancesList { get; set; }
         public List<AttendanceRecord>? AttendanceRecordList { get; set; }
+        public List<AttendanceAndAbsenceProcessing>? AttendanceAndAbsenceProcessingList { get; set; }
         public List<AutomaticallyApprovedAdd_on>? AutomaticallyApprovedAdd_onList { get; set; }
         public List<AttendanceAndAbsenceProcessing>? AttendanceAndAbsenceProcessingList { get; set; }
         public List<MachineInfo>? MachineInfoList { get; set; }
@@ -40,6 +41,8 @@ namespace N.G.HRS.Areas.OrganizationalChart.Models
         [ForeignKey("DepartmentsId")]
         [Display(Name = "الادارة")]
         public int? DepartmentsId { get; set; }
+        [Display(Name = "الادارة")]
+
         public Departments? Departments { get; set; }
         //=
         public List<StaffTime>? staffTimeList { get; set; }

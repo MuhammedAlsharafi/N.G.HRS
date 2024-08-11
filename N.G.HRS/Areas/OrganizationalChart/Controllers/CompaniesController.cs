@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -24,6 +25,8 @@ namespace N.G.HRS.Areas.OrganizationalChart.Controllers
         }
 
         // GET: OrganizationalChart/Companies
+        [Authorize(Policy = "ViewPolicy")]
+
         public async Task<IActionResult> Index()
         {
             var appDbContext = _context.company.Include(c => c.BoardOfDirectors);
@@ -31,6 +34,8 @@ namespace N.G.HRS.Areas.OrganizationalChart.Controllers
         }
 
         // GET: OrganizationalChart/Companies/Details/5
+        [Authorize(Policy = "DetailsPolice ")]
+
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -50,7 +55,9 @@ namespace N.G.HRS.Areas.OrganizationalChart.Controllers
         }
 
         // GET: OrganizationalChart/Companies/Create
-        public async Task< IActionResult> Create()
+        [Authorize(Policy = "AddPolicy")]
+
+        public async Task<IActionResult> Create()
         {
             await PopulateDropdownListsAsync();
             return View();
@@ -61,13 +68,15 @@ namespace N.G.HRS.Areas.OrganizationalChart.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "AddPolicy")]
+
         public async Task<IActionResult> Create([Bind("Id,Date,CompanyName,LicenseNumber,TypeOfBusinessActivity,ComponyLogo,ComponyAddress,Notes,BoardOfDirectorsId")] Company company)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    var number= _context.company.Count();
+                    var number = _context.company.Count();
                     if (number == 1)
                     {
                         TempData["Error"] = "لا يمكن إضافة اكثر من شركة !!";
@@ -94,6 +103,7 @@ namespace N.G.HRS.Areas.OrganizationalChart.Controllers
         }
 
         // GET: OrganizationalChart/Companies/Edit/5
+        [Authorize(Policy = "EditPolicy")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -115,6 +125,7 @@ namespace N.G.HRS.Areas.OrganizationalChart.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "EditPolicy")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Date,CompanyName,LicenseNumber,TypeOfBusinessActivity,ComponyLogo,ComponyAddress,Notes,BoardOfDirectorsId")] Company company)
         {
             if (id != company.Id)
@@ -147,6 +158,7 @@ namespace N.G.HRS.Areas.OrganizationalChart.Controllers
         }
 
         // GET: OrganizationalChart/Companies/Delete/5
+        [Authorize(Policy = "DeletePolicy")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -168,6 +180,7 @@ namespace N.G.HRS.Areas.OrganizationalChart.Controllers
         // POST: OrganizationalChart/Companies/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "DeletePolicy")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var company = await _CompaniesRepository.GetByIdAsync(id);

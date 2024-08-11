@@ -9,6 +9,7 @@ using N.G.HRS.Areas.AalariesAndWages.Models;
 using N.G.HRS.Areas.Finance.Models;
 using N.G.HRS.Date;
 using N.G.HRS.Repository;
+using Microsoft.AspNetCore.Authorization;
 
 namespace N.G.HRS.Areas.SalariesAndWages.Controllers
 {
@@ -25,6 +26,8 @@ namespace N.G.HRS.Areas.SalariesAndWages.Controllers
         }
 
         // GET: SalariesAndWages/EmployeeAccounts
+        [Authorize(Policy = "ViewPolicy")]
+
         public async Task<IActionResult> Index()
         {
             var appDbContext = _context.EmployeeAccount.Include(e => e.FinanceAccount).Include(e => e.FinanceAccountType).Include(e => e.employee);
@@ -32,6 +35,8 @@ namespace N.G.HRS.Areas.SalariesAndWages.Controllers
         }
 
         // GET: SalariesAndWages/EmployeeAccounts/Details/5
+        [Authorize(Policy = "DetailsPolicy")]
+
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -53,10 +58,12 @@ namespace N.G.HRS.Areas.SalariesAndWages.Controllers
         }
 
         // GET: SalariesAndWages/EmployeeAccounts/Create
+        [Authorize(Policy = "AddPolicy")]
+
         public IActionResult Create()
         {
-            ViewData["FinanceAccountId"] = new SelectList(_context.Set<FinanceAccount>(), "Id", "Id");
-            ViewData["FinanceAccountTypeId"] = new SelectList(_context.FinanceAccountType, "Id", "Id");
+            ViewData["FinanceAccountId"] = new SelectList(_context.Set<FinanceAccount>(), "Id", "Name");
+            ViewData["FinanceAccountTypeId"] = new SelectList(_context.FinanceAccountType, "Id", "Name");
             ViewData["EmployeeId"] = new SelectList(_context.employee, "Id", "EmployeeName");
             return View();
         }
@@ -66,27 +73,29 @@ namespace N.G.HRS.Areas.SalariesAndWages.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "AddPolicy")]
         public async Task<IActionResult> Create([Bind("Id,Notes,EmployeeId,FinanceAccountTypeId,FinanceAccountId")] EmployeeAccount employeeAccount)
         {
             if (ModelState.IsValid)
             {
                await _employeeAccountRepository.AddAsync(employeeAccount);
                 TempData["Success"] = "تم الحفظ بنجاح";
-                //return RedirectToAction(nameof(Create));
+                return RedirectToAction(nameof(Create));
 
-                return RedirectToAction(nameof(Index));
+                //return RedirectToAction(nameof(Index));
             }
             else
             {
                 TempData["Error"] = "حدث خطأ ما";
             }
-            ViewData["FinanceAccountId"] = new SelectList(_context.Set<FinanceAccount>(), "Id", "Id", employeeAccount.FinanceAccountId);
-            ViewData["FinanceAccountTypeId"] = new SelectList(_context.FinanceAccountType, "Id", "Id", employeeAccount.FinanceAccountTypeId);
+            ViewData["FinanceAccountId"] = new SelectList(_context.Set<FinanceAccount>(), "Id", "Name", employeeAccount.FinanceAccountId);
+            ViewData["FinanceAccountTypeId"] = new SelectList(_context.FinanceAccountType, "Id", "Name", employeeAccount.FinanceAccountTypeId);
             ViewData["EmployeeId"] = new SelectList(_context.employee, "Id", "EmployeeName", employeeAccount.EmployeeId);
             return View(employeeAccount);
         }
 
         // GET: SalariesAndWages/EmployeeAccounts/Edit/5
+        [Authorize(Policy = "EditPolicy")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -99,8 +108,8 @@ namespace N.G.HRS.Areas.SalariesAndWages.Controllers
             {
                 return NotFound();
             }
-            ViewData["FinanceAccountId"] = new SelectList(_context.Set<FinanceAccount>(), "Id", "Id", employeeAccount.FinanceAccountId);
-            ViewData["FinanceAccountTypeId"] = new SelectList(_context.FinanceAccountType, "Id", "Id", employeeAccount.FinanceAccountTypeId);
+            ViewData["FinanceAccountId"] = new SelectList(_context.Set<FinanceAccount>(), "Id", "Name", employeeAccount.FinanceAccountId);
+            ViewData["FinanceAccountTypeId"] = new SelectList(_context.FinanceAccountType, "Id", "Name", employeeAccount.FinanceAccountTypeId);
             ViewData["EmployeeId"] = new SelectList(_context.employee, "Id", "EmployeeName", employeeAccount.EmployeeId);
             return View(employeeAccount);
         }
@@ -110,6 +119,7 @@ namespace N.G.HRS.Areas.SalariesAndWages.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "EditPolicy")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Notes,EmployeeId,FinanceAccountTypeId,FinanceAccountId")] EmployeeAccount employeeAccount)
         {
             if (id != employeeAccount.Id)
@@ -140,13 +150,14 @@ namespace N.G.HRS.Areas.SalariesAndWages.Controllers
                 //return RedirectToAction(nameof(Index));
 
             }
-            ViewData["FinanceAccountId"] = new SelectList(_context.Set<FinanceAccount>(), "Id", "Id", employeeAccount.FinanceAccountId);
-            ViewData["FinanceAccountTypeId"] = new SelectList(_context.FinanceAccountType, "Id", "Id", employeeAccount.FinanceAccountTypeId);
+            ViewData["FinanceAccountId"] = new SelectList(_context.Set<FinanceAccount>(), "Id", "Name", employeeAccount.FinanceAccountId);
+            ViewData["FinanceAccountTypeId"] = new SelectList(_context.FinanceAccountType, "Id", "Name", employeeAccount.FinanceAccountTypeId);
             ViewData["EmployeeId"] = new SelectList(_context.employee, "Id", "EmployeeName", employeeAccount.EmployeeId);
             return View(employeeAccount);
         }
 
         // GET: SalariesAndWages/EmployeeAccounts/Delete/5
+        [Authorize(Policy = "DeletePolicy")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -170,6 +181,7 @@ namespace N.G.HRS.Areas.SalariesAndWages.Controllers
         // POST: SalariesAndWages/EmployeeAccounts/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "DeletePolicy")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var employeeAccount = await _employeeAccountRepository.GetByIdAsync(id);
